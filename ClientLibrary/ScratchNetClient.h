@@ -13,6 +13,7 @@
 #include <thread>
 #include <atomic>
 #include <queue>
+#include <mutex>
 
 
 #define SNC_EXPORTS
@@ -22,8 +23,6 @@
 #else
 #define SNC_API  __declspec(dllimport)
 #endif
-
-extern std::atomic<bool> shutDownRequested = false;
 
 class ScratchNetClient
 {
@@ -56,9 +55,16 @@ public:
 
     Address* sendAddress;
 
+    std::atomic<bool> shutDownRequested = false;
+
     std::thread clientThread;
 
     std::queue<Snapshot> snapshotsToProcess; //when the unity object needs to sends its changes it will queue up a snapshot for the client to process
+   
+    //we need these mutexes to lock up variables to ensure they cannot be accessed by other threads ensuring no data corruption and we dont get silent errors
+    std::mutex snapshotQueueMutex;
+    std::mutex packetMaintenceMutex;
+    std::mutex snapRecordKeeperMutex;
 
 };
 

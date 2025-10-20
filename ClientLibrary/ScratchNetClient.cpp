@@ -5,6 +5,7 @@
 #include <thread>
 #include <Payload.h>
 #include <PacketSerialization.h>
+#include <mutex>
 
 const int safetyBuffer = 32;
 const int packetSize = 55;
@@ -45,6 +46,7 @@ void ScratchNetClient::ClientProcess()
         Address* server = CreateAddress();
         int recievedFromServer = clientSock.Receive(*server, &receiveBuf, recieveSize);
 
+       
         if (recievedFromServer > 0)
         {
             printf("Recieved information from server: %s \n", receiveBuf);
@@ -67,6 +69,8 @@ void ScratchNetClient::ClientProcess()
 
             std::cout << "CRC Check Succeeded" << std::endl;
             //packet maintence
+
+            std::unique_lock<std::mutex> packetMaintence_lock(packetMaintenceMutex);
             packetAckMaintence->InsertRecievedSequenceIntoRecvBuffer(recvHeader->sequence); //insert sender's packet sequence into our local recv sequence buf
 
             packetAckMaintence->OnPacketAcked(recvHeader->ack); //acknowledge the most recent packet that was recieved by the sender
@@ -82,9 +86,13 @@ void ScratchNetClient::ClientProcess()
             packetAckMaintence->mostRecentRecievedPacket = recvHeader->sequence;
             //apply changes to clients here
 
+            packetMaintence_lock.unlock();
+
             Snapshot* extractedChanges = new Snapshot();
             Snapshot* newBaseline = new Snapshot();
 
+
+            std::unique_lock<std::mutex> recordKeeper_lock(snapRecordKeeperMutex);
             //how will we deconstruct the packet and who will we apply it to
             switch (recvHeader->packetCode)
             {
@@ -127,7 +135,7 @@ void ScratchNetClient::ClientProcess()
                 break;
             }
 
-
+            recordKeeper_lock.unlock();
 
             delete extractedChanges;
             delete newBaseline;
@@ -139,10 +147,15 @@ void ScratchNetClient::ClientProcess()
 
         //SENDING PROCESS
         Snapshot* dummySnap = CreateEmptySnapShot();
-        
+
+        //lock this section up so 
+        std::unique_lock<std::mutex> snapshotQueue_lock(snapshotQueueMutex);
         if (!snapshotsToProcess.empty())
         {
-            dummySnap = &ExtractTopSnapshotToProcess();
+            
+            printf("Sending a packet off...");
+
+            *dummySnap = ExtractTopSnapshotToProcess();
 
             CompareSnapShot(*ssRecordKeeper->baselineRecord.recordedSnapshot, *dummySnap, changedVariables, changedValues);
 
@@ -174,11 +187,14 @@ void ScratchNetClient::ClientProcess()
 
             changedValues.clear();
             changedVariables.clear();
-            delete dummySnap;
+            
             delete payloadToSend; //wipe the payload as we dont need it anymore
             delete header;
+
         }
-        
+        snapshotQueue_lock.unlock();
+
+        delete dummySnap;
 
         //
 
@@ -250,11 +266,13 @@ void ScratchNetClient::QueueSnapshot(int objectID, float posX, float posY, float
 
 Snapshot ScratchNetClient::ExtractTopSnapshotToProcess()
 {
+    //std::lock_guard<std::mutex> lock(snapshotQueueMutex); //locking up data so that no other thread can access the data 
     return snapshotsToProcess.front();
 }
 
 void ScratchNetClient::ProcessTopSnapshot()
 {
+    //std::lock_guard<std::mutex> lock(snapshotQueueMutex);
     snapshotsToProcess.pop();
 }
 
@@ -288,10 +306,13 @@ void BeginClientProcess(ScratchNetClient* client)
 
 void CleanupClient(ScratchNetClient* client)
 {
-    shutDownRequested = true;
+    client->shutDownRequested = true;
 
-    client->clientThread.join();
-
+    if (client->clientThread.joinable())
+    {
+        client->clientThread.join();
+    }
+    
     client->clientSock.Close();
 }
 
@@ -302,6 +323,7 @@ int GetObjectID(ScratchNetClient* client)
 
 SNC_API void QueuePositionToClient(ScratchNetClient* client, int objectID, float posX, float posY, float posZ)
 {
+    std::lock_guard<std::mutex> lock(client->snapshotQueueMutex);
     client->QueueSnapshot(objectID, posX, posY, posZ);   
 }
 
