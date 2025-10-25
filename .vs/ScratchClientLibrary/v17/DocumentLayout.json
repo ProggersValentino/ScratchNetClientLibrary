@@ -3,24 +3,32 @@
   "WorkspaceRootPath": "C:\\LibraryProjects\\ScratchClientLibrary\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\NetworkObjectManagement.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\ScratchNetClient.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\ScratchNetClient.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\NetworkObjectManagement.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\NetworkObjectManagement.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\ScratchNetObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\ScratchNetClient.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\ScratchNetObject.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EF96216-C328-4F68-A078-94B77F48B624}|ClientLibrary\\ClientLibrary.vcxproj|solutionrelative:ClientLibrary\\dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,61 +38,88 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
+              "Title": "ScratchNetObject.cpp",
+              "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.cpp",
+              "RelativeDocumentMoniker": "ClientLibrary\\ScratchNetObject.cpp",
+              "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.cpp",
+              "RelativeToolTip": "ClientLibrary\\ScratchNetObject.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-22T04:08:15.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ScratchNetObject.h",
+              "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.h",
+              "RelativeDocumentMoniker": "ClientLibrary\\ScratchNetObject.h",
+              "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetObject.h",
+              "RelativeToolTip": "ClientLibrary\\ScratchNetObject.h",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-22T03:26:09.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "NetworkObjectManagement.cpp",
               "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.cpp",
               "RelativeDocumentMoniker": "ClientLibrary\\NetworkObjectManagement.cpp",
               "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.cpp",
               "RelativeToolTip": "ClientLibrary\\NetworkObjectManagement.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAADwvzQAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-10-19T08:21:29.485Z"
+              "WhenOpened": "2025-10-19T08:21:29.485Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "NetworkObjectManagement.h",
               "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.h",
               "RelativeDocumentMoniker": "ClientLibrary\\NetworkObjectManagement.h",
               "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\NetworkObjectManagement.h",
               "RelativeToolTip": "ClientLibrary\\NetworkObjectManagement.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAACAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAADAAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-19T08:21:16.735Z"
+              "WhenOpened": "2025-10-19T08:21:16.735Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ScratchNetClient.h",
               "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.h",
               "RelativeDocumentMoniker": "ClientLibrary\\ScratchNetClient.h",
               "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.h",
               "RelativeToolTip": "ClientLibrary\\ScratchNetClient.h",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAIwEwAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAgwGgAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-10-19T08:20:32.235Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ScratchNetClient.cpp",
               "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.cpp",
               "RelativeDocumentMoniker": "ClientLibrary\\ScratchNetClient.cpp",
               "ToolTip": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\ScratchNetClient.cpp",
               "RelativeToolTip": "ClientLibrary\\ScratchNetClient.cpp",
-              "ViewState": "AgIAAD4BAAAAAAAAAADwvysAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAANEAAAAAAAAAAADwv+kAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-10-19T08:26:56.186Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "dllmain.cpp",
               "DocumentMoniker": "C:\\LibraryProjects\\ScratchClientLibrary\\ClientLibrary\\dllmain.cpp",
               "RelativeDocumentMoniker": "ClientLibrary\\dllmain.cpp",
@@ -92,8 +127,7 @@
               "RelativeToolTip": "ClientLibrary\\dllmain.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-10-12T12:39:14.254Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T12:39:14.254Z"
             }
           ]
         }

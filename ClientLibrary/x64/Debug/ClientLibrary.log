@@ -7,6 +7,17 @@ C:\LibraryProjects\ScratchPacketLibrary\ScratchPacket\Payload.h(26,20): warning 
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(442,7):
       see declaration of 'std::vector<char,std::allocator<char>>'
   
+  ScratchNetObject.cpp
+C:\LibraryProjects\ScratchClientLibrary\ClientLibrary\ScratchNetObject.cpp(10,5): warning C4273: 'GetSNObjectID': inconsistent dll linkage
+  (compiling source file '/ScratchNetObject.cpp')
+      C:\LibraryProjects\ScratchClientLibrary\ClientLibrary\ScratchNetObject.h(23,14):
+      see previous definition of 'GetSNObjectID'
+  
+C:\LibraryProjects\ScratchClientLibrary\ClientLibrary\ScratchNetObject.cpp(15,23): warning C4273: 'GetSNORecordKeeper': inconsistent dll linkage
+  (compiling source file '/ScratchNetObject.cpp')
+      C:\LibraryProjects\ScratchClientLibrary\ClientLibrary\ScratchNetObject.h(24,32):
+      see previous definition of 'GetSNORecordKeeper'
+  
   Generating Code...
      Creating library C:\LibraryProjects\ScratchClientLibrary\x64\Debug\ClientLibrary.lib and object C:\LibraryProjects\ScratchClientLibrary\x64\Debug\ClientLibrary.exp
   ClientLibrary.vcxproj -> C:\LibraryProjects\ScratchClientLibrary\x64\Debug\ClientLibrary.dll

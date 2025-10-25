@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ScratchNetClient.h"
 #include "ScratchAck.h"
+#include "NetSockets.h"
 #include <iostream>
 #include <thread>
 #include <Payload.h>
@@ -29,6 +30,7 @@ void ScratchNetClient::ClientProcess()
     char transmitBuf[totalPacketSize] = { 0 };
     char receiveBuf[totalPacketSize] = { 0 };
 
+    InitializeSockets();
 
     //strcpy_s(transmitBuf, "");
     //strcpy_s(receiveBuf, "")
@@ -106,18 +108,18 @@ void ScratchNetClient::ClientProcess()
 
                 newBaseline = ApplyChangesToSnapshot(*ssRecordKeeper->baselineRecord.recordedSnapshot, *extractedChanges);
 
-                UpdateNetworkedObject(*newBaseline);
+                UpdateNetworkedObject(recvHeader->sequence, *newBaseline);
                 printf("object: %d has updated to: %f %f %f", newBaseline->objectId, newBaseline->posX, newBaseline->posY, newBaseline->posZ);
 
                 break;
             case 12: //outright apply change to object
                 extractedChanges = DeconstructAbsolutePayload(recievedPayload);
 
-                if (extractedChanges->objectId == ssRecordKeeper->baselineRecord.recordedSnapshot->objectId) //we dont wnat to change the client's object htta is reserved for the heartbeat sent from server
+                if (extractedChanges->objectId == ssRecordKeeper->baselineRecord.recordedSnapshot->objectId) //we dont wnat to change the client's object that action is reserved for the heartbeat sent from server
                 {
                     break;
                 }
-                UpdateNetworkedObject(*extractedChanges);
+                UpdateNetworkedObject(recvHeader->sequence, *extractedChanges);
                 printf("object: %d has updated to: %f %f %f", extractedChanges->objectId, extractedChanges->posX, extractedChanges->posY, extractedChanges->posZ);
                 break;
             case 21://ACK specifically
@@ -127,8 +129,9 @@ void ScratchNetClient::ClientProcess()
                 break;
             case 22: //update the client's baseline snapshot which will be the movement 
                 extractedChanges = DeconstructAbsolutePayload(recievedPayload);
+
+                //while the client will have its own unity object, we only need to update the record in the main one as that is what the unity object is pulling from
                 ssRecordKeeper->InsertNewRecord(recvHeader->sequence, *extractedChanges);
-                UpdateNetworkedObject(*extractedChanges);
 
                 printf("object: %d has updated to: %f %f %f", extractedChanges->objectId, extractedChanges->posX, extractedChanges->posY, extractedChanges->posZ);
 
@@ -223,12 +226,12 @@ void ScratchNetClient::ClientListen(void* recieveBuf)
 
 }
 
-void ScratchNetClient::UpdateNetworkedObject(Snapshot changesToBeMade)
+void ScratchNetClient::UpdateNetworkedObject(uint16_t sequence, Snapshot changesToBeMade)
 {
 
-    if (!nom.TryUpdatingNetworkedObject(changesToBeMade))
+    if (!nom->TryUpdatingNetworkedObject(sequence, changesToBeMade))
     {
-        nom.TryInsertNewNetworkObject(changesToBeMade);
+        nom->TryInsertNewNetworkObject(sequence, changesToBeMade);
     }
 }
 
@@ -280,6 +283,8 @@ SNC_API ScratchNetClient* InitializeClient()
 {
     ScratchNetClient* client = new ScratchNetClient();
 
+    //InitializeSockets(); //startup WSA
+
     client->InitSockets();
 
     client->objectID = client->generateObjectID();
@@ -294,9 +299,16 @@ SNC_API ScratchNetClient* InitializeClient()
     client->ssRecordKeeper = InitRecordKeeper();
     client->ssRecordKeeper->InsertNewRecord(0, *initSnap); //inserting default baseline
 
+    client->nom = new NetworkObjectManagement();
+
     delete initSnap;
 
     return client;
+}
+
+NetworkObjectManagement* ExtractNOM(ScratchNetClient* client)
+{
+    return client->nom;
 }
 
 void BeginClientProcess(ScratchNetClient* client)
@@ -306,7 +318,7 @@ void BeginClientProcess(ScratchNetClient* client)
 
 void CleanupClient(ScratchNetClient* client)
 {
-    client->shutDownRequested = true;
+    shutDownRequested = true;
 
     if (client->clientThread.joinable())
     {

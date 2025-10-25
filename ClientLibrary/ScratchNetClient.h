@@ -6,6 +6,8 @@
 #include "NetworkObjectManagement.h"
 #include "Address.h"
 
+#include <winsock2.h>
+#include <Ws2tcpip.h>
 #include <iostream>
 #include <random>
 #include <chrono>
@@ -24,6 +26,8 @@
 #define SNC_API  __declspec(dllimport)
 #endif
 
+extern std::atomic<bool> shutDownRequested = false;
+
 class ScratchNetClient
 {
 public:
@@ -33,7 +37,7 @@ public:
     void ClientProcess();
     void ClientListen(void* recieveBuf);
 
-    void UpdateNetworkedObject(Snapshot changesToBeMade);
+    void UpdateNetworkedObject(uint16_t sequence, Snapshot changesToBeMade);
 
     int generateObjectID();
 
@@ -42,12 +46,14 @@ public:
     Snapshot ExtractTopSnapshotToProcess();
     void ProcessTopSnapshot(); //pops the top most snapshot when request is fulfilled
 
+    
+
 public:
     //std::unordered_map<int, Snapshot> networkedObjects;
 
     int objectID = 0;
 
-    NetworkObjectManagement nom;
+    NetworkObjectManagement* nom;
     SnapshotRecordKeeper* ssRecordKeeper;
     ScratchAck* packetAckMaintence;
     Snapshot clientSnap;
@@ -55,7 +61,7 @@ public:
 
     Address* sendAddress;
 
-    std::atomic<bool> shutDownRequested = false;
+   
 
     std::thread clientThread;
 
@@ -66,11 +72,26 @@ public:
     std::mutex packetMaintenceMutex;
     std::mutex snapRecordKeeperMutex;
 
+
+    static BOOL ConsoleHandler(DWORD signal) {
+        switch (signal) {
+        case CTRL_C_EVENT:
+            /*case CTRL_CLOSE_EVENT:*/
+            std::cout << "\nGracefully shutting down...\n";
+            shutDownRequested = true; // signal threads to stop
+            return TRUE;     // tell the OS you handled it
+        default:
+            return FALSE;
+        }
+    }
+
 };
 
 extern "C"
 {
     SNC_API ScratchNetClient* InitializeClient();
+
+    SNC_API NetworkObjectManagement* ExtractNOM(ScratchNetClient* client);
 
     SNC_API void BeginClientProcess(ScratchNetClient* client); //begin the client process of sending and recieving packets
 

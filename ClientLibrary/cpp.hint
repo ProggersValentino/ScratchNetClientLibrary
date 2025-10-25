@@ -3,3 +3,7 @@
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define SNC_API __declspec(dllexport)
 #define SNC_API __declspec(dllimport)
+#define NOM_API __declspec(dllexport)
+#define NOM_API __declspec(dllimport)
+#define SNO_API __declspec(dllexport)
+#define SNO_API __declspec(dllimport)
