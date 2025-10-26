@@ -35,7 +35,7 @@ bool NetworkObjectManagement::TryUpdatingNetworkedObject(uint16_t sequence, Snap
         return false; //we already have 
     }
 
-    networkedObjects[changesToUpdate.objectId]->ssRecordKeeper->InsertNewRecord(sequence, changesToUpdate);
+  networkedObjects[changesToUpdate.objectId]->ssRecordKeeper->InsertNewRecord(sequence, changesToUpdate);
     return true;
 }
 
