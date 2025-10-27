@@ -8,9 +8,11 @@
 #include <PacketSerialization.h>
 #include <mutex>
 
+
 const int safetyBuffer = 32;
 const int packetSize = 55;
 const int totalPacketSize = packetSize + safetyBuffer;
+
 
 ScratchNetClient::ScratchNetClient()
 {
@@ -26,6 +28,9 @@ void ScratchNetClient::InitSockets()
 void ScratchNetClient::ClientProcess()
 {
     
+
+    auto prevClock = std::chrono::high_resolution_clock::now();
+
     //separate buffers to prevent mix ups and ensure there is a clear difference between what gets sent and what is retrieved from server
     char transmitBuf[totalPacketSize] = { 0 };
     char receiveBuf[totalPacketSize] = { 0 };
@@ -43,6 +48,9 @@ void ScratchNetClient::ClientProcess()
     ///this is a common approach and can lead into threadpooling methods 
     while (!shutDownRequested)
     {
+        
+
+
         //RECIEVING PROCESS 
         int recieveSize = totalPacketSize;
         Address* server = CreateAddress();
@@ -147,15 +155,23 @@ void ScratchNetClient::ClientProcess()
         }
         //
 
+        //delay
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float delta = std::chrono::duration<float>(currentTime - prevClock).count();
+        prevClock = currentTime;
+
+        accum += delta; //update the current accumulated time
+        
 
         //SENDING PROCESS
         Snapshot* dummySnap = CreateEmptySnapShot();
 
         //lock this section up so 
         std::unique_lock<std::mutex> snapshotQueue_lock(snapshotQueueMutex);
-        if (!snapshotsToProcess.empty())
+        if (!snapshotsToProcess.empty() && accum >= packetMilliConverted)
         {
-            
+            accum = 0.f;
+
             printf("Sending a packet off...");
 
             *dummySnap = ExtractTopSnapshotToProcess();
@@ -199,8 +215,8 @@ void ScratchNetClient::ClientProcess()
 
         delete dummySnap;
 
-        //
-
+        //sleeping thread for a bit so we're bombarding with packets equating to 10pps -> this will be especially handy for over the network 
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     clientSock.Close();
@@ -279,6 +295,12 @@ void ScratchNetClient::ProcessTopSnapshot()
     snapshotsToProcess.pop();
 }
 
+bool ScratchNetClient::CanSendPacket()
+{
+    
+    return accum >= packetMilliConverted;
+}
+
 SNC_API ScratchNetClient* InitializeClient()
 {
     ScratchNetClient* client = new ScratchNetClient();
@@ -352,4 +374,67 @@ float RetrieveBaselinePacketPosY(ScratchNetClient* client)
 float RetrieveBaselinePacketPosZ(ScratchNetClient* client)
 {
     return client->ssRecordKeeper->baselineRecord.recordedSnapshot->posZ;
+}
+
+bool CanPacketBeQueuedToSend(ScratchNetClient* client)
+{
+    return client->CanSendPacket();
+}
+
+Snapshot* ExtractSnapshotFromIndex(ScratchNetClient* clientObject, int index)
+{
+    std::lock_guard<std::mutex> snapRecordLock(clientObject->snapRecordKeeperMutex);
+    Snapshot* record = clientObject->ssRecordKeeper->TryToGetSnapshotFromIndex(index);
+    
+    if (record == nullptr)
+    {
+        std::cout << "Couldnt extract snapshot from record keeper from index: " << index << std::endl;
+        return nullptr;
+    }
+
+    return record;
+}
+
+SnapshotRecord* ExtractSnapshotRecordFromIndex(ScratchNetClient* clientObject, int index)
+{
+    std::lock_guard<std::mutex> snapRecordLock(clientObject->snapRecordKeeperMutex);
+    SnapshotRecord* record = clientObject->ssRecordKeeper->TryToGetRecordFromIndex(index);
+
+    if (record == nullptr)
+    {
+        std::cout << "Couldnt extract snapshot from record keeper from index: " << index << std::endl;
+        return nullptr;
+    }
+
+    return record;
+}
+
+int FindRecordIndex(ScratchNetClient* clientObject, SnapshotRecord* recordToLookFor)
+{
+    std::lock_guard<std::mutex> snapRecordLock(clientObject->snapRecordKeeperMutex);
+
+    int recordPositionInBacklog = clientObject->ssRecordKeeper->TryLookUpRecordPosition(recordToLookFor->packetSequence);
+
+    if (recordPositionInBacklog == -1)
+    {
+        std::cout << "cant find record position \n" << std::endl;
+        return -1;
+    }
+
+    return recordPositionInBacklog;
+}
+
+float RetrievePacketPosX(Snapshot* chosenSnapshot)
+{
+    return chosenSnapshot->posX;
+}
+
+float RetrievePacketPosY(Snapshot* chosenSnapshot)
+{
+    return chosenSnapshot->posY;
+}
+
+float RetrievePacketPosZ(Snapshot* chosenSnapshot)
+{
+    return chosenSnapshot->posZ;
 }

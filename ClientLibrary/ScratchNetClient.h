@@ -46,7 +46,7 @@ public:
     Snapshot ExtractTopSnapshotToProcess();
     void ProcessTopSnapshot(); //pops the top most snapshot when request is fulfilled
 
-    
+    bool CanSendPacket();
 
 public:
     //std::unordered_map<int, Snapshot> networkedObjects;
@@ -61,7 +61,9 @@ public:
 
     Address* sendAddress;
 
-   
+    const int packetSendRate = 10;
+    const float packetMilliConverted = 0.f/*1.f / packetSendRate*/;
+    float accum = 0.f;
 
     std::thread clientThread;
 
@@ -106,5 +108,18 @@ extern "C"
     SNC_API float RetrieveBaselinePacketPosY(ScratchNetClient* client);
     SNC_API float RetrieveBaselinePacketPosZ(ScratchNetClient* client);
 
+    SNC_API bool CanPacketBeQueuedToSend(ScratchNetClient* client);
+
+    //extracts a snapshot from the given index from the client's RecordKeeper
+    SNC_API Snapshot* ExtractSnapshotFromIndex(ScratchNetClient* clientObject, int index);
+
+    SNC_API SnapshotRecord* ExtractSnapshotRecordFromIndex(ScratchNetClient* clientObject, int index);
+    
+    //because hte record keeper is constantly changing we'll need to grab the new index the record is at
+    SNC_API int FindRecordIndex(ScratchNetClient* clientObject, SnapshotRecord* recordToLookFor);
+
+    SNC_API float RetrievePacketPosX(Snapshot* chosenSnapshot);
+    SNC_API float RetrievePacketPosY(Snapshot* chosenSnapshot);
+    SNC_API float RetrievePacketPosZ(Snapshot* chosenSnapshot);
 
 }
