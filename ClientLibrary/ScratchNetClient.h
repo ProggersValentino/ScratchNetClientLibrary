@@ -48,6 +48,8 @@ public:
 
     bool CanSendPacket();
 
+    void UpdateSendRateCalc();
+
 public:
     //std::unordered_map<int, Snapshot> networkedObjects;
 
@@ -61,8 +63,8 @@ public:
 
     Address* sendAddress;
 
-    const int packetSendRate = 10;
-    const float packetMilliConverted = 0.f/*1.f / packetSendRate*/;
+    int packetSendRate = 0;
+    float packetMilliConverted = 1.f / packetSendRate;
     float accum = 0.f;
 
     std::thread clientThread;
@@ -122,4 +124,6 @@ extern "C"
     SNC_API float RetrievePacketPosY(Snapshot* chosenSnapshot);
     SNC_API float RetrievePacketPosZ(Snapshot* chosenSnapshot);
 
+    //to set how many packets we want to send to the server per second
+    SNC_API void SetPacketSendRate(ScratchNetClient* clientObject, int sendRate);
 }

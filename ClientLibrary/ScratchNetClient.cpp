@@ -62,7 +62,7 @@ void ScratchNetClient::ClientProcess()
             printf("Recieved information from server: %s \n", receiveBuf);
             ScratchPacketHeader* recvHeader = InitEmptyPacketHeader();
 
-            Payload recievedPayload = *CreateEmptyPayload();
+            Payload recievedPayload = Payload();
 
             DeconstructPacket(receiveBuf, *recvHeader, recievedPayload);
 
@@ -74,6 +74,8 @@ void ScratchNetClient::ClientProcess()
             if (!CompareCRC(*recvHeader, tempbuf, tpSize))
             {
                 std::cout << "Failed CRC Check" << std::endl;
+                delete recvHeader;
+                delete server;
                 continue;
             }
 
@@ -90,6 +92,8 @@ void ScratchNetClient::ClientProcess()
             if (recvHeader->sequence < packetAckMaintence->mostRecentRecievedPacket) //is the packet's sequence we just recieved higher than our most recently recieved packet sequence?
             {
                 packetAckMaintence->mostRecentRecievedPacket = recvHeader->sequence;
+                delete recvHeader;
+                delete server;
                 continue;
             }
 
@@ -98,8 +102,8 @@ void ScratchNetClient::ClientProcess()
 
             packetMaintence_lock.unlock();
 
-            Snapshot* extractedChanges = new Snapshot();
-            Snapshot* newBaseline = new Snapshot();
+            Snapshot* extractedChanges = nullptr;
+            Snapshot* newBaseline = nullptr;
 
 
             std::unique_lock<std::mutex> recordKeeper_lock(snapRecordKeeperMutex);
@@ -154,6 +158,7 @@ void ScratchNetClient::ClientProcess()
 
         }
         //
+        delete server;
 
         //delay
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -233,12 +238,14 @@ void ScratchNetClient::ClientListen(void* recieveBuf)
     {
         printf("Recieved information from server: %s \n", (char*)recieveBuf);
 
-        Payload recievedPayload = *CreateEmptyPayload();
+        Payload recievedPayload = Payload();
 
         DeserializePayload((char*)recieveBuf, recieveSize, recievedPayload);
 
         printf("deserialized float: %f", DeserializeFloat(recievedPayload.setChanges, 0));
     }
+
+    delete server;
 
 }
 
@@ -301,6 +308,11 @@ bool ScratchNetClient::CanSendPacket()
     return accum >= packetMilliConverted;
 }
 
+void ScratchNetClient::UpdateSendRateCalc()
+{
+    packetMilliConverted = 1.f / packetSendRate;
+}
+
 SNC_API ScratchNetClient* InitializeClient()
 {
     ScratchNetClient* client = new ScratchNetClient();
@@ -348,6 +360,8 @@ void CleanupClient(ScratchNetClient* client)
     }
     
     client->clientSock.Close();
+
+    delete client->nom;
 }
 
 int GetObjectID(ScratchNetClient* client)
@@ -438,3 +452,13 @@ float RetrievePacketPosZ(Snapshot* chosenSnapshot)
 {
     return chosenSnapshot->posZ;
 }
+
+void SetPacketSendRate(ScratchNetClient* clientObject, int sendRate)
+{
+    clientObject->packetSendRate = sendRate;
+    clientObject->UpdateSendRateCalc();
+}
+
+
+
+
